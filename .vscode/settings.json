@@ -1,0 +1,27 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPathWin": "f:\\esp_idf_5.4.1\\v5.4.1\\esp-idf",
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ],
+    "idf.toolsPathWin": "f:\\esp_idf_5.4.1\\v5.4.1\\esp-idf\\tools",
+    "files.autoGuessEncoding": true,
+    "idf.portWin": "COM9",
+    "idf.flashType": "UART",
+    "idf.port": "/dev/ttyUSB0",
+    "idf.espIdfPath": "/root/esp/v5.4/esp-idf",
+    "idf.toolsPath": "/root/.espressif",
+    "idf.pythonInstallPath": "f:\\esp_idf_5.4.1\\v5.4.1\\esp-idf\\tools\\tools\\idf-python\\3.11.2\\python.exe",
+    "files.associations": {
+        "exit.h": "c",
+        "stdio.h": "c",
+        "esptimer.h": "c",
+        "esp_log.h": "c",
+        "led.h": "c",
+        "timg.h": "c",
+        "gpio.h": "c",
+        "timer.h": "c",
+        "esp_clk_tree.h": "c",
+        "adc_cali_scheme.h": "c"
+    }
+}

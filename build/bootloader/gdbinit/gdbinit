@@ -1,0 +1,2 @@
+source E:/fyz_esp32s3_project/build/bootloader/gdbinit/symbols
+source E:/fyz_esp32s3_project/build/bootloader/gdbinit/connect
