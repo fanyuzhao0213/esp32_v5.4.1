@@ -8,7 +8,8 @@ set(src_dirs
             XL9555
             AT24C02
             ADC
-            AP3216C)
+            AP3216C
+            RMT_RX )
 
 set(include_dirs
             LED
@@ -20,7 +21,8 @@ set(include_dirs
             XL9555
             AT24C02
             ADC
-            AP3216C)
+            AP3216C
+            RMT_RX )
 
 set(requires
             driver

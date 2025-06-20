@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "fyz_esp32_project",
-    "project_version":    "1",
+    "project_version":    "def28f2-dirty",
     "project_path":       "E:/fyz_esp32s3_project",
     "idf_path":           "F:/esp_idf_5.4.1/v5.4.1/esp-idf",
     "build_dir":          "E:/fyz_esp32s3_project/build",
@@ -40,8 +40,8 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "E:/fyz_esp32s3_project/build/esp-idf/BSP/libBSP.a",
-            "sources": [ "E:/fyz_esp32s3_project/components/BSP/LED/led.c", "E:/fyz_esp32s3_project/components/BSP/EXIT/exit.c", "E:/fyz_esp32s3_project/components/BSP/ESPTIMER/esptimer.c", "E:/fyz_esp32s3_project/components/BSP/TIMG/timg.c", "E:/fyz_esp32s3_project/components/BSP/PWM/pwm.c", "E:/fyz_esp32s3_project/components/BSP/MYIIC/myiic.c", "E:/fyz_esp32s3_project/components/BSP/XL9555/xl9555.c", "E:/fyz_esp32s3_project/components/BSP/AT24C02/at24c02.c", "E:/fyz_esp32s3_project/components/BSP/ADC/adc.c", "E:/fyz_esp32s3_project/components/BSP/AP3216C/ap3216c.c" ],
-            "include_dirs": [ "LED", "EXIT", "ESPTIMER", "TIMG", "PWM", "MYIIC", "XL9555", "AT24C02", "ADC", "AP3216C" ]
+            "sources": [ "E:/fyz_esp32s3_project/components/BSP/LED/led.c", "E:/fyz_esp32s3_project/components/BSP/EXIT/exit.c", "E:/fyz_esp32s3_project/components/BSP/ESPTIMER/esptimer.c", "E:/fyz_esp32s3_project/components/BSP/TIMG/timg.c", "E:/fyz_esp32s3_project/components/BSP/PWM/pwm.c", "E:/fyz_esp32s3_project/components/BSP/MYIIC/myiic.c", "E:/fyz_esp32s3_project/components/BSP/XL9555/xl9555.c", "E:/fyz_esp32s3_project/components/BSP/AT24C02/at24c02.c", "E:/fyz_esp32s3_project/components/BSP/ADC/adc.c", "E:/fyz_esp32s3_project/components/BSP/AP3216C/ap3216c.c", "E:/fyz_esp32s3_project/components/BSP/RMT_RX/rmt_nec_rx.c" ],
+            "include_dirs": [ "LED", "EXIT", "ESPTIMER", "TIMG", "PWM", "MYIIC", "XL9555", "AT24C02", "ADC", "AP3216C", "RMT_RX" ]
         },
         "app_trace": {
             "alias": "idf::app_trace",
@@ -2887,7 +2887,7 @@
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "LED", "EXIT", "ESPTIMER", "TIMG", "PWM", "MYIIC", "XL9555", "AT24C02", "ADC", "AP3216C" ]
+            "include_dirs": [ "LED", "EXIT", "ESPTIMER", "TIMG", "PWM", "MYIIC", "XL9555", "AT24C02", "ADC", "AP3216C", "RMT_RX" ]
         }
     },
     "debug_prefix_map_gdbinit": "",

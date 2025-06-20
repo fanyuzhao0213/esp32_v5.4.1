@@ -22,6 +22,8 @@
 #include "at24c02.h"
 #include "ap3216c.h"
 #include "adc.h"
+#include "rmt_nec_rx.h"
+
 
 const char* TAG = "MAIN";
 
@@ -70,11 +72,16 @@ static void my_hardware_init(void)
     my_eeprom_init();                       /* 初始化 eeprom */
     adc_init();                             /* 初始化 ADC */
     ap3216c_init();                         /* 初始化 ap3216C */
+    rmt_nec_rx_init();                      /* RMT 接收初始化*/
+
+
 
     // 创建 ADC 采集任务
     xTaskCreate(adc_task, "adc_task", 2048, NULL, 5, NULL);
     // 创建 ap3216c 采集任务
     xTaskCreate(ap3216c_task, "ap3216c_task", 2048, NULL, 5, NULL);
+    // 创建 rmtrx 采集任务
+    xTaskCreate(rmt_rx_task, "rmt_rx_task", 4096, NULL, 5, NULL);
     // /* 初始化定时器 */
     // timer_init_example();
 }
