@@ -2,3 +2,4 @@
 0x0 bootloader/bootloader.bin
 0x10000 fyz_esp32_project.bin
 0x8000 partition_table/partition-table.bin
+0xc00000 storage.bin

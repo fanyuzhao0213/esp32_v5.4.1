@@ -9,7 +9,9 @@ set(src_dirs
             AT24C02
             ADC
             AP3216C
-            RMT_RX )
+            RMT_RX
+            RMT_TX
+            SPIFFS)
 
 set(include_dirs
             LED
@@ -22,12 +24,15 @@ set(include_dirs
             AT24C02
             ADC
             AP3216C
-            RMT_RX )
+            RMT_RX
+            RMT_TX
+            SPIFFS)
 
 set(requires
             driver
             esp_timer
-            esp_adc)
+            esp_adc
+            spiffs)
 
 idf_component_register(SRC_DIRS ${src_dirs} INCLUDE_DIRS ${include_dirs} REQUIRES ${requires})
 

@@ -18,6 +18,8 @@ rmt_channel_handle_t rx_channel = NULL;
 rmt_symbol_word_t raw_symbols[64];      /* 对于标准NEC框架应该足够 */
 rmt_receive_config_t receive_config;
 
+#define MAX_NEC_SYMBOLS 68  // 最多解析这么多个符号（NEC 标准编码 = 34 组）
+
 /**
  * @brief       RMT数据接收完成回调函数
  * @param       channel   : 通道
@@ -116,54 +118,59 @@ bool rmt_nec_parse_frame(rmt_symbol_word_t *rmt_nec_symbols)
     uint16_t address = 0;
     uint16_t command = 0;
 
-    bool valid_leading_code = rmt_nec_check_range(cur->duration0, NEC_LEADING_CODE_DURATION_0) &&
-                              rmt_nec_check_range(cur->duration1, NEC_LEADING_CODE_DURATION_1);
-
-    if (!valid_leading_code)
+    ESP_LOGI("RMT_NEC", "接收到 RMT 符号（最多打印前 %d 个）：", MAX_NEC_SYMBOLS);
+    for (int i = 0; i < MAX_NEC_SYMBOLS; i++)
     {
+        if (cur[i].duration0 == 0 && cur[i].duration1 == 0)
+            break;  // 遇到空数据就停止
+
+        ESP_LOGI("RMT_NEC", "[%02d] level0: %5dus | level1: %5dus", i, cur[i].duration0, cur[i].duration1);
+    }
+
+    // 校验前导码
+    if (!(rmt_nec_check_range(cur[0].duration0, NEC_LEADING_CODE_DURATION_0) &&
+          rmt_nec_check_range(cur[0].duration1, NEC_LEADING_CODE_DURATION_1)))
+    {
+        ESP_LOGW("RMT_NEC", "前导码不正确");
         return false;
     }
 
-    cur++;
+    cur++;  // 跳过引导码
 
+    // 解析地址
     for (int i = 0; i < 16; i++)
     {
         if (rmt_nec_logic1(cur))
-        {
             address |= 1 << i;
-        }
         else if (rmt_nec_logic0(cur))
-        {
             address &= ~(1 << i);
-        }
         else
         {
+            ESP_LOGW("RMT_NEC", "地址第 %d 位无效", i);
             return false;
         }
         cur++;
     }
 
+    // 解析命令
     for (int i = 0; i < 16; i++)
     {
         if (rmt_nec_logic1(cur))
-        {
             command |= 1 << i;
-        }
         else if (rmt_nec_logic0(cur))
-        {
             command &= ~(1 << i);
-        }
         else
         {
+            ESP_LOGW("RMT_NEC", "命令第 %d 位无效", i);
             return false;
         }
         cur++;
     }
 
-    /* 保存数据地址和命令，用于判断重复按键 */
     s_nec_code_address = address;
     s_nec_code_command = command;
 
+    ESP_LOGI("RMT_NEC", "NEC解码成功：地址=0x%04X, 命令=0x%04X", address, command);
     return true;
 }
 

@@ -1,4 +1,6 @@
 
+/*红外解码第三方库*/
+#include "ir_decode.h"
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -23,7 +25,8 @@
 #include "ap3216c.h"
 #include "adc.h"
 #include "rmt_nec_rx.h"
-
+#include "rmt_nec_tx.h"
+#include "my_spiffs.h"
 
 const char* TAG = "MAIN";
 
@@ -47,9 +50,12 @@ void app_main(void)
         ESP_ERROR_CHECK(nvs_flash_erase());
         ESP_ERROR_CHECK(nvs_flash_init());
     }
-    printf_chip_info();
+    printf_chip_info();             //打印板载信息
+    ESP_ERROR_CHECK(spiffs_init("storage", DEFAULT_MOUNT_POINT, DEFAULT_FD_NUM));    /* SPIFFS初始化 */
+    spiffs_test();
 
-    my_hardware_init();
+
+    my_hardware_init();             //初始化板级设备信息
 
 
     while(1) {
@@ -72,8 +78,8 @@ static void my_hardware_init(void)
     my_eeprom_init();                       /* 初始化 eeprom */
     adc_init();                             /* 初始化 ADC */
     ap3216c_init();                         /* 初始化 ap3216C */
-    rmt_nec_rx_init();                      /* RMT 接收初始化*/
-
+    rmt_nec_rx_init();                      /* RMT 红外接收器件初始化*/
+    rmt_nec_tx_init();                      /* RMT 红外发送器件初始化 */
 
 
     // 创建 ADC 采集任务
@@ -82,6 +88,8 @@ static void my_hardware_init(void)
     xTaskCreate(ap3216c_task, "ap3216c_task", 2048, NULL, 5, NULL);
     // 创建 rmtrx 采集任务
     xTaskCreate(rmt_rx_task, "rmt_rx_task", 4096, NULL, 5, NULL);
+    // 创建 rmttx 发送任务
+    xTaskCreate(rmt_tx_task, "rmt_tx_task", 4096, NULL, 5, NULL);
     // /* 初始化定时器 */
     // timer_init_example();
 }

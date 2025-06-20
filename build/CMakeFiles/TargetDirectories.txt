@@ -837,6 +837,9 @@ E:/fyz_esp32s3_project/build/esp-idf/wifi_provisioning/CMakeFiles/install.dir
 E:/fyz_esp32s3_project/build/esp-idf/wifi_provisioning/CMakeFiles/install/local.dir
 E:/fyz_esp32s3_project/build/esp-idf/wifi_provisioning/CMakeFiles/install/strip.dir
 E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/__idf_main.dir
+E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/spiffs_storage_bin.dir
+E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/storage-flash.dir
+E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/encrypted-storage-flash.dir
 E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/edit_cache.dir
 E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/rebuild_cache.dir
 E:/fyz_esp32s3_project/build/esp-idf/main/CMakeFiles/list_install_components.dir
@@ -850,3 +853,10 @@ E:/fyz_esp32s3_project/build/esp-idf/BSP/CMakeFiles/list_install_components.dir
 E:/fyz_esp32s3_project/build/esp-idf/BSP/CMakeFiles/install.dir
 E:/fyz_esp32s3_project/build/esp-idf/BSP/CMakeFiles/install/local.dir
 E:/fyz_esp32s3_project/build/esp-idf/BSP/CMakeFiles/install/strip.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/__idf_IREXT.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/edit_cache.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/rebuild_cache.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/list_install_components.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install/local.dir
+E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install/strip.dir
