@@ -48,6 +48,7 @@ INT8 ir_ac_lib_parse()
 
     if (IR_DECODE_FAILED == binary_parse_offset())
     {
+
         return IR_DECODE_FAILED;
     }
 

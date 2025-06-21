@@ -1,0 +1,51 @@
+# ESP-IDF 构建输出目录
+/build/
+*.bin
+*.elf
+*.map
+
+# ESP-IDF Python 环境
+.python_env/
+
+# CMake 和 Ninja 的临时文件
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# 编译中间文件
+*.o
+*.obj
+*.d
+*.a
+
+# 日志文件
+*.log
+
+# VSCode 等编辑器生成的临时文件
+.vscode/
+*.code-workspace
+
+# CLion / JetBrains 工程缓存
+.idea/
+
+# 隐藏文件夹和临时文件
+*.swp
+*.swo
+*.tmp
+*~
+
+# SPIFFS / FATFS 烧录镜像
+*.img
+
+# ESP-IDF 配置备份文件
+sdkconfig.old
+sdkconfig.defaults
+
+# 项目中可忽略的下载缓存
+*.pyc
+__pycache__/
+
+# 其他临时文件
+*.bak
+*.orig

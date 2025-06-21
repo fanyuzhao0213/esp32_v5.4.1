@@ -5,7 +5,8 @@
  */
 
 #include "rmt_nec_tx.h"
-
+#include "xl9555.h"
+#include "pwm.h"
 
 const char* RMTTX_TAG = "RMT_TX";
 
@@ -66,6 +67,7 @@ void rmt_send_nec(uint16_t addr, uint16_t cmd)
 
 void rmt_tx_task(void *pvParameters)
 {
+    #if 0
     // 常用 NEC 红外码（例如地址 0x00FF，命令 0x00FF）
     ir_nec_scan_code_t scan_code = {
         .address = 0x00FF,
@@ -90,4 +92,42 @@ void rmt_tx_task(void *pvParameters)
 
         vTaskDelay(pdMS_TO_TICKS(10000));  // 每10秒发一次
     }
+
+    #endif
+
+    uint8_t exio_key = 0;
+
+    while(1)
+    {
+        exio_key = xl9555_key_scan(0);
+
+        switch (exio_key)
+        {
+            case KEY0_PRES: /* 打开蜂鸣器 */
+                // xl9555_pin_write(BEEP_IO, 0);
+                ESP_LOGI("mian","KEY0 has been pressed");
+                tv_ir_send_example(TV_POWER);
+                break;
+            case KEY1_PRES: /* 关闭蜂鸣器 */
+                //xl9555_pin_write(BEEP_IO, 1);
+                ESP_LOGI("mian","KEY1 has been pressed");
+                tv_ir_send_example(TV_UP);
+                break;
+            case KEY2_PRES: /* 打开LED */
+                pwm_set_duty(0);                      //设置占空比为0   最大亮度  设置为100 则灭
+                ESP_LOGI("mian","KEY2 has been pressed");
+                tv_ir_send_example(TV_DOWN);
+                break;
+            case KEY3_PRES: /* 关闭LED */
+                pwm_set_duty(100);                      //设置占空比为0   最大亮度  设置为100 则灭
+                ESP_LOGI("mian","KEY3 has been pressed");
+                tv_ir_send_example(TV_MUTE);
+                break;
+            default:
+                break;
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+
 }

@@ -1,7 +1,3 @@
-
-/*红外解码第三方库*/
-#include "ir_decode.h"
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "nvs_flash.h"
@@ -12,7 +8,6 @@
 #include "esp_flash.h"
 #include <stdio.h>
 #include "esp_log.h"
-
 
 #include "led.h"
 #include "exit.h"
@@ -56,7 +51,6 @@ void app_main(void)
 
 
     my_hardware_init();             //初始化板级设备信息
-
 
     while(1) {
         vTaskDelay(pdMS_TO_TICKS(100)); /* 延时 */
@@ -162,3 +156,86 @@ static void timer_init_example(void)
 
     /* 注意：实际项目中应考虑内存释放时机 */
 }
+
+
+
+
+uint16_t decoded[1024] = { 0 };   // 存放解码后的红外数据
+
+
+/**
+ * @brief       填充RMT item电平和持续时间
+ * @param[out]  item     : RMT item指针
+ * @param[in]   high_us  : 高电平时间 (us)
+ * @param[in]   low_us   : 低电平时间 (us)
+ */
+static inline void nec_fill_item_level(rmt_item32_t *item, int high_us, int low_us)
+{
+    item->level0 = 1;
+    item->duration0 = (high_us) / 10 * 1000000;
+    item->level1 = 0;
+    item->duration1 = (low_us) / 10 * 1000000;
+}
+
+
+/**
+ * @brief       构建RMT item数组
+ * @param[out]  item     : 输出RMT item数组
+ * @param[in]   item_num : item数组的数量
+ */
+static void build_tv_rmt_items(rmt_item32_t *item, size_t item_num)
+{
+    nec_fill_item_level(item, decoded[0], decoded[1]);
+    for (size_t i = 1; i < item_num; i++)
+    {
+        item++;
+        nec_fill_item_level(item, decoded[2 * i], decoded[2 * i + 1]);
+    }
+}
+
+
+/**
+ * @brief       发送TV红外信号
+ * @param       key_val : 需要发送的TV按键值（例如 TV_POWER）
+ */
+void tv_ir_send_example(t_tv_key_value key_val)
+{
+    char *filepath = "/spiffs/irda_tv_skyworth.bin";
+
+    if (ir_file_open(2, 1, filepath) != 0)
+    {
+        ESP_LOGE("TV_IR", "打开红外库文件失败: %s", filepath);
+        return;
+    }
+
+    uint16_t decode_len = ir_decode(key_val, decoded, NULL, 0);
+    ir_close();
+
+    if (decode_len == 0)
+    {
+        ESP_LOGE("TV_IR", "解码按键失败: %d", key_val);
+        return;
+    }
+
+    if (decode_len > 200)
+    {
+        decode_len = (decode_len + 1) / 2;
+    }
+
+    size_t item_num = decode_len / 2;
+    rmt_item32_t *item = (rmt_item32_t *)malloc(sizeof(rmt_item32_t) * item_num);
+    if (item == NULL)
+    {
+        ESP_LOGE("TV_IR", "内存分配失败");
+        return;
+    }
+
+    build_tv_rmt_items(item, item_num);
+
+    // 发送红外信号
+    ESP_ERROR_CHECK(rmt_transmit(tx_channel, nec_encoder, item, item_num * sizeof(rmt_item32_t), &transmit_config));
+    ESP_ERROR_CHECK(rmt_tx_wait_all_done(tx_channel, pdMS_TO_TICKS(1000)));
+
+    free(item);
+}
+

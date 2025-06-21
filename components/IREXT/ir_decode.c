@@ -18,6 +18,7 @@ Revision log:
 #include "include/ir_utils.h"
 #include "include/ir_ac_build_frame.h"
 #include "include/ir_ac_apply.h"
+#include "esp_log.h"
 
 struct ir_bin_buffer binary_file;
 struct ir_bin_buffer *p_ir_buffer = &binary_file;
@@ -122,7 +123,6 @@ INT8 ir_file_open(const UINT8 category, const UINT8 sub_category, const char* fi
         printf("wrong remote sub category : %d\n", sub_category);
         return IR_DECODE_FAILED;
     }
-
     if (category == REMOTE_CATEGORY_AC)
     {
         ir_binary_type = IR_TYPE_STATUS;
@@ -151,7 +151,6 @@ INT8 ir_file_open(const UINT8 category, const UINT8 sub_category, const char* fi
         {
             return IR_DECODE_FAILED;
         }
-
         ret = ir_tv_file_open(file_name);
         if (IR_DECODE_SUCCEEDED == ret)
         {

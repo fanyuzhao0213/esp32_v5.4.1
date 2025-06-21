@@ -25,6 +25,25 @@
         "adc_cali_scheme.h": "c",
         "esp_system.h": "c",
         "inttypes.h": "c",
-        "ir_decode.h": "c"
+        "ir_decode.h": "c",
+        "rmt_nec_tx.h": "c",
+        "rmt_nec_rx.h": "c",
+        "rmt_rx.h": "c",
+        "nvs_flash.h": "c",
+        "array": "c",
+        "bitset": "c",
+        "string_view": "c",
+        "format": "c",
+        "initializer_list": "c",
+        "span": "c",
+        "regex": "c",
+        "rmt_types.h": "c",
+        "xl9555.h": "c",
+        "esp_psram.h": "c",
+        "my_spiffs.h": "c",
+        "adc.h": "c",
+        "esp_chip_info.h": "c",
+        "ap3216c.h": "c",
+        "at24c02.h": "c"
     }
 }
