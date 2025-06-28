@@ -567,3 +567,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("E:/fyz_esp32s3_project/build/esp-idf/IREXT/cmake_install.cmake")
 endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("E:/fyz_esp32s3_project/build/esp-idf/Middlewares/cmake_install.cmake")
+endif()
+

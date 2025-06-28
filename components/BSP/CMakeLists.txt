@@ -11,7 +11,11 @@ set(src_dirs
             AP3216C
             RMT_RX
             RMT_TX
-            SPIFFS)
+            SPIFFS
+            ES8388
+            MYI2S
+            SPI_SD
+            MYSPI)
 
 set(include_dirs
             LED
@@ -26,13 +30,18 @@ set(include_dirs
             AP3216C
             RMT_RX
             RMT_TX
-            SPIFFS)
+            SPIFFS
+            ES8388
+            MYI2S
+            SPI_SD
+            MYSPI)
 
 set(requires
             driver
             esp_timer
             esp_adc
-            spiffs)
+            spiffs
+            fatfs)
 
 idf_component_register(SRC_DIRS ${src_dirs} INCLUDE_DIRS ${include_dirs} REQUIRES ${requires})
 

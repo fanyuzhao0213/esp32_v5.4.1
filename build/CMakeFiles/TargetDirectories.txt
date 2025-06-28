@@ -860,3 +860,10 @@ E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/list_install_components.di
 E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install.dir
 E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install/local.dir
 E:/fyz_esp32s3_project/build/esp-idf/IREXT/CMakeFiles/install/strip.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/__idf_Middlewares.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/edit_cache.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/rebuild_cache.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/list_install_components.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/install.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/install/local.dir
+E:/fyz_esp32s3_project/build/esp-idf/Middlewares/CMakeFiles/install/strip.dir

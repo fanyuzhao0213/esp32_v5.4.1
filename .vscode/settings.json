@@ -6,7 +6,7 @@
     ],
     "idf.toolsPathWin": "f:\\esp_idf_5.4.1\\v5.4.1\\esp-idf\\tools",
     "files.autoGuessEncoding": true,
-    "idf.portWin": "COM9",
+    "idf.portWin": "COM11",
     "idf.flashType": "UART",
     "idf.port": "/dev/ttyUSB0",
     "idf.espIdfPath": "/root/esp/v5.4/esp-idf",
@@ -44,6 +44,22 @@
         "adc.h": "c",
         "esp_chip_info.h": "c",
         "ap3216c.h": "c",
-        "at24c02.h": "c"
+        "at24c02.h": "c",
+        "sdmmc_cmd.h": "c",
+        "myi2s.h": "c",
+        "audioplay.h": "c",
+        "esp_partition.h": "c",
+        "fonts.h": "c",
+        "spi_sd.h": "c",
+        "my_spi.h": "c",
+        "wavplay.h": "c",
+        "audio_pipeline.h": "c",
+        "exfuns.h": "c",
+        "cstdint": "c",
+        "dirent.h": "c",
+        "mp3play.h": "c",
+        "minimp3.h": "c",
+        "minimp3_ex.h": "c",
+        "es8388.h": "c"
     }
 }

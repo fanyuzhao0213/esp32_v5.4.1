@@ -22,7 +22,16 @@
 #include "rmt_nec_rx.h"
 #include "rmt_nec_tx.h"
 #include "my_spiffs.h"
+#include "my_spi.h"
+#include "spi_sd.h"
+#include "sdmmc_cmd.h"
+#include "../components/Middlewares/MYFATFS/exfuns.h"
+#include "audioplay.h"
 
+
+#define MINIMP3_IMPLEMENTATION
+
+#define PCM_BUFFER_SIZE MINIMP3_MAX_SAMPLES_PER_FRAME
 const char* TAG = "MAIN";
 
 static void ledc_init_example(void);
@@ -30,6 +39,7 @@ static void timer_init_example(void);
 static void printf_chip_info(void);
 static void my_eeprom_init(void);
 static void my_hardware_init(void);
+
 /**
  * @brief       程序入口
  * @param       无
@@ -49,17 +59,20 @@ void app_main(void)
     ESP_ERROR_CHECK(spiffs_init("storage", DEFAULT_MOUNT_POINT, DEFAULT_FD_NUM));    /* SPIFFS初始化 */
     spiffs_test();
 
-
     my_hardware_init();             //初始化板级设备信息
-
+    // xTaskCreate(mp3_play_task, "mp3", 8192*2, NULL, 5, NULL);
+    // wav_play_song("0:/MUSIC/2.wav");      //单独播放某一个特定文件的音乐  wav格式
     while(1) {
-        vTaskDelay(pdMS_TO_TICKS(100)); /* 延时 */
+        audio_play();       /* 循环播放音乐 */
+        vTaskDelay(pdMS_TO_TICKS(10)); /* 延时 */
     }
 }
 
-
 static void my_hardware_init(void)
 {
+    esp_err_t ret;
+
+    size_t bytes_total, bytes_free;         /* SD卡的总空间与剩余空间 */
     /* 初始化基础外设 */
     //led_init();                           /* 初始化LED */
     pwm_init(1000, 0);                      // 1kHz, 50% 占空比
@@ -74,16 +87,33 @@ static void my_hardware_init(void)
     ap3216c_init();                         /* 初始化 ap3216C */
     rmt_nec_rx_init();                      /* RMT 红外接收器件初始化*/
     rmt_nec_tx_init();                      /* RMT 红外发送器件初始化 */
+    my_spi_init();                          /* SPI初始化 */
 
+    while (sd_spi_init())       /* 检测不到SD卡 */
+    {
+        ESP_LOGE(TAG,"SD Card Error!");
+        vTaskDelay(500);
+        ESP_LOGE(TAG, "Please Check! ");
+        vTaskDelay(500);
+    }
+    ESP_LOGI(TAG,"SD card init success!");
+    sd_get_fatfs_usage(&bytes_total, &bytes_free);
+    ret = exfuns_init();    /* 为fatfs相关变量申请内存 */
 
+    while (es8388_init())       /* ES8388初始化 */
+    {
+        ESP_LOGE(TAG, "ES8388 Error");
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+    ESP_LOGI(TAG,"ES8388 init success!");
     // 创建 ADC 采集任务
     xTaskCreate(adc_task, "adc_task", 2048, NULL, 5, NULL);
     // 创建 ap3216c 采集任务
     xTaskCreate(ap3216c_task, "ap3216c_task", 2048, NULL, 5, NULL);
     // 创建 rmtrx 采集任务
-    xTaskCreate(rmt_rx_task, "rmt_rx_task", 4096, NULL, 5, NULL);
+    xTaskCreate(rmt_rx_task, "rmt_rx_task", 8192, NULL, 5, NULL);
     // 创建 rmttx 发送任务
-    xTaskCreate(rmt_tx_task, "rmt_tx_task", 4096, NULL, 5, NULL);
+    //xTaskCreate(rmt_tx_task, "rmt_tx_task", 4096, NULL, 5, NULL);
     // /* 初始化定时器 */
     // timer_init_example();
 }
@@ -161,8 +191,6 @@ static void timer_init_example(void)
 
 
 uint16_t decoded[1024] = { 0 };   // 存放解码后的红外数据
-
-
 /**
  * @brief       填充RMT item电平和持续时间
  * @param[out]  item     : RMT item指针
@@ -238,4 +266,3 @@ void tv_ir_send_example(t_tv_key_value key_val)
 
     free(item);
 }
-
