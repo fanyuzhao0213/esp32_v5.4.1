@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "esp_log.h"
 
+#include "http.h"
+#include "wifi.h"
 #include "led.h"
 #include "exit.h"
 #include "esptimer.h"
@@ -27,12 +29,9 @@
 #include "sdmmc_cmd.h"
 #include "../components/Middlewares/MYFATFS/exfuns.h"
 #include "audioplay.h"
+#include "mp3_decoder.h"
 
-
-#define MINIMP3_IMPLEMENTATION
-
-#define PCM_BUFFER_SIZE MINIMP3_MAX_SAMPLES_PER_FRAME
-const char* TAG = "MAIN";
+#define TAG "MAIN"
 
 static void ledc_init_example(void);
 static void timer_init_example(void);
@@ -59,11 +58,25 @@ void app_main(void)
     ESP_ERROR_CHECK(spiffs_init("storage", DEFAULT_MOUNT_POINT, DEFAULT_FD_NUM));    /* SPIFFS初始化 */
     spiffs_test();
 
+
+    my_wifi_init();
+    xTaskCreate(http_get_task, "http_get_task", 8192, NULL, 5, NULL);
+    xTaskCreate(decode_mp3_task, "print_task", 4096, NULL, 4, NULL);
     my_hardware_init();             //初始化板级设备信息
-    // xTaskCreate(mp3_play_task, "mp3", 8192*2, NULL, 5, NULL);
-    // wav_play_song("0:/MUSIC/2.wav");      //单独播放某一个特定文件的音乐  wav格式
+    // // wav_play_song("0:/MUSIC/2.wav");      //单独播放某一个特定文件的音乐  wav格式
+    // my_mp3_play_test("0:/MP3/1.mp3");
+
+    const char *mp3_path = "/spiffs/test.mp3"; // 请确保路径正确且已挂载
+
+    FILE *fp = fopen(mp3_path, "rb");
+    if (!fp) {
+        ESP_LOGE(TAG, "Failed to open file %s", mp3_path);
+        return;
+    }
+    ret = play_mp3_file(fp);
+
     while(1) {
-        audio_play();       /* 循环播放音乐 */
+        // audio_play();       /* 循环播放音乐 */
         vTaskDelay(pdMS_TO_TICKS(10)); /* 延时 */
     }
 }

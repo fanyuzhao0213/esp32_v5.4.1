@@ -1,10 +1,12 @@
 /**
  ****************************************************************************************************
  * @file        audioplay.c
+ ****************************************************************************************************
  */
 
 #include "audioplay.h"
-
+#include "mp3_decoder.h"
+#include "mp3_decoder.h"
 
 __audiodev g_audiodev;          /* 音乐播放控制器 */
 
@@ -79,9 +81,7 @@ uint16_t audio_get_tnum(uint8_t *path)
  */
 void audio_index_show(uint16_t index, uint16_t total)
 {
-    // spilcd_show_num(30 + 0, 230, index, 3, 16, RED);
-    // spilcd_show_char(30 + 24, 230, '/', 16, 0, RED);
-    // spilcd_show_num(30 + 32, 230, total, 3, 16, RED);
+    ESP_LOGE("Audioplay","index:%d,total:%d\r\n", index,total);
 }
 
 /**
@@ -98,18 +98,6 @@ void audio_msg_show(uint32_t totsec, uint32_t cursec, uint32_t bitrate)
     if (playtime != cursec)
     {
         playtime = cursec;
-
-        // spilcd_show_xnum(30, 210, playtime / 60, 2, 16, 0X80, RED);
-        // spilcd_show_char(30 + 16, 210, ':', 16, 0, RED);
-        // spilcd_show_xnum(30 + 24, 210, playtime % 60, 2, 16, 0X80, RED);
-        // spilcd_show_char(30 + 40, 210, '/', 16, 0, RED);
-
-        // spilcd_show_xnum(30 + 48, 210, totsec / 60, 2, 16, 0X80, RED);
-        // spilcd_show_char(30 + 64, 210, ':', 16, 0, RED);
-        // spilcd_show_xnum(30 + 72, 210, totsec % 60, 2, 16, 0X80, RED);
-
-        // spilcd_show_num(30 + 110, 210, bitrate / 1000, 4, 16, RED);
-        // spilcd_show_string(30 + 110 + 32 , 210, 200, 16, 16, "Kbps", RED);
     }
 }
 
@@ -207,17 +195,17 @@ void audio_play(void)
     uint32_t temp;
     uint32_t *wavoffsettbl;
 
-    while (f_opendir(&wavdir, "0:/MUSIC"))
+    while (f_opendir(&wavdir, "0:/MP3"))
     {
-        ESP_LOGI("AUDIOPLAY","MUSIC文件夹错误!");
+        ESP_LOGE("Audioplay","MP3文件夹错误!");
         vTaskDelay(200);
     }
 
-    totwavnum = audio_get_tnum((uint8_t *)"0:/MUSIC");          /* 得到总有效文件数 */
+    totwavnum = audio_get_tnum((uint8_t *)"0:/MP3");          /* 得到总有效文件数 */
 
     while (totwavnum == 0)
     {
-        ESP_LOGI("AUDIOPLAY","没有音乐文件!");
+        ESP_LOGE("Audioplay","MP3文没有音乐文件件夹错误!");
         vTaskDelay(200);
     }
 
@@ -227,11 +215,11 @@ void audio_play(void)
 
     while (!wavfileinfo || !pname || !wavoffsettbl)
     {
-        ESP_LOGI("AUDIOPLAY","内存分配失败!");
+        ESP_LOGE("Audioplay","内存分配失败!");
         vTaskDelay(200);
     }
 
-    res = f_opendir(&wavdir, "0:/MUSIC");
+    res = f_opendir(&wavdir, "0:/MP3");
 
     if (res == FR_OK)
     {
@@ -259,26 +247,21 @@ void audio_play(void)
     }
 
     curindex = 0;                                               /* 从0开始显示 */
-    res = f_opendir(&wavdir, (const TCHAR*)"0:/MUSIC");
+    res = f_opendir(&wavdir, (const TCHAR*)"0:/MP3");
 
     while (res == FR_OK)                                        /* 打开目录 */
     {
         atk_dir_sdi(&wavdir, wavoffsettbl[curindex]);           /* 改变当前目录索引 */
-
+        ESP_LOGI("MP3","curindex:%d", curindex);
         res = f_readdir(&wavdir, wavfileinfo);                  /* 读取文件 */
-
         if ((res != FR_OK) || (wavfileinfo->fname[0] == 0))
         {
             break;
         }
-
-        strcpy((char *)pname, "0:/MUSIC/");
+        strcpy((char *)pname, "0:/MP3/");
         strcat((char *)pname, (const char *)wavfileinfo->fname);
-        // spilcd_fill(30, 190, spilcddev.width, spilcddev.height, WHITE);
-        // audio_index_show(curindex + 1, totwavnum);
-        // text_show_string(30, 190, 300, 16, (char *)wavfileinfo->fname, 16, 0, BLUE);
+        ESP_LOGI("Audioplay","pname:%s", pname);
         key = audio_play_song(pname);
-
         if (key == KEY1_PRES)       /* 上一首 */
         {
             if (curindex)
@@ -323,20 +306,26 @@ uint8_t audio_play_song(uint8_t *fname)
     uint8_t res;
 
     res = exfuns_file_type((char *)fname);
-
+    ESP_LOGI("Audioplay","exfuns_file_type  res:%d", res);
     switch (res)
     {
         case T_WAV:
+            ESP_LOGI("Audioplay","WAV  START!");
             res = wav_play_song(fname);
             break;
         case T_MP3:
-            /* 自行实现 */
+        {
+            // const char *fname = "0:/MP3/test.mp3"; // 或者你是从某个路径列表拿到的 char *
+            // res = my_mp3_play((const char *)fname);
+            ESP_LOGI("Audioplay","MP3  START!");
             break;
+        }
 
         default:            /* 其他文件,自动跳转到下一曲 */
-            printf("can't play:%s\r\n", fname);
+            ESP_LOGE("Audioplay","can't play:%s\r\n", fname);
             res = KEY0_PRES;
             break;
     }
     return res;
 }
+

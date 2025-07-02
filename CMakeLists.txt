@@ -3,9 +3,7 @@
 cmake_minimum_required(VERSION 3.16)
 # 功能：设置额外的组件搜索路径
 set(EXTRA_COMPONENT_DIRS components/Middlewares)
-
-# 设置ADF组件路径
-set(EXTRA_COMPONENT_DIRS F:/esp_adf/esp-adf/components)
+# set(EXTRA_COMPONENT_DIRS managed_components/espressif__esp_audio_codec)
 
 # 这个选项的作用是让编译器（GCC 或 Clang）在输出诊断信息（如警告和错误）时总是使用颜色，使得在终端中更容易识别。
 add_compile_options(-fdiagnostics-color=always)

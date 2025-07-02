@@ -84,6 +84,8 @@ E:/fyz_esp32s3_project/build/esp-idf/spiffs/libspiffs.a
 E:/fyz_esp32s3_project/build/esp-idf/touch_element/libtouch_element.a
 E:/fyz_esp32s3_project/build/esp-idf/usb/libusb.a
 E:/fyz_esp32s3_project/build/esp-idf/wifi_provisioning/libwifi_provisioning.a
+E:/fyz_esp32s3_project/build/esp-idf/chmorgan__esp-libhelix-mp3/libchmorgan__esp-libhelix-mp3.a
+E:/fyz_esp32s3_project/build/esp-idf/chmorgan__esp-audio-player/libchmorgan__esp-audio-player.a
 E:/fyz_esp32s3_project/build/esp-idf/main/libmain.a
 E:/fyz_esp32s3_project/build/esp-idf/BSP/libBSP.a
 E:/fyz_esp32s3_project/build/esp-idf/IREXT/libIREXT.a

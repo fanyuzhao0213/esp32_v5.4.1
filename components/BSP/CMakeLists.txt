@@ -15,7 +15,8 @@ set(src_dirs
             ES8388
             MYI2S
             SPI_SD
-            MYSPI)
+            MYSPI
+            WIFI)
 
 set(include_dirs
             LED
@@ -34,14 +35,20 @@ set(include_dirs
             ES8388
             MYI2S
             SPI_SD
-            MYSPI)
+            MYSPI
+            WIFI)
 
 set(requires
             driver
             esp_timer
             esp_adc
             spiffs
-            fatfs)
+            fatfs
+            esp_wifi
+            esp_http_client
+            json
+            mqtt)
+
 
 idf_component_register(SRC_DIRS ${src_dirs} INCLUDE_DIRS ${include_dirs} REQUIRES ${requires})
 

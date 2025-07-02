@@ -31555,6 +31555,47 @@
                 "id": "component-config-wi-fi-provisioning-manager",
                 "title": "Wi-Fi Provisioning Manager",
                 "type": "menu"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "The audio player can play mp3 files using libhelix-mp3.",
+                        "id": "AUDIO_PLAYER_ENABLE_MP3",
+                        "name": "AUDIO_PLAYER_ENABLE_MP3",
+                        "range": null,
+                        "title": "Enable mp3 decoding.",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "Audio player can decode wave files.",
+                        "id": "AUDIO_PLAYER_ENABLE_WAV",
+                        "name": "AUDIO_PLAYER_ENABLE_WAV",
+                        "range": null,
+                        "title": "Enable wav file playback",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": null,
+                        "help": "Specify the verbosity of Audio Player log output.",
+                        "id": "AUDIO_PLAYER_LOG_LEVEL",
+                        "name": "AUDIO_PLAYER_LOG_LEVEL",
+                        "range": [
+                            0,
+                            3
+                        ],
+                        "title": "Audio Player log level (0 none - 3 highest)",
+                        "type": "int"
+                    }
+                ],
+                "depends_on": null,
+                "id": "component-config-audio-playback",
+                "title": "Audio playback",
+                "type": "menu"
             }
         ],
         "depends_on": null,
