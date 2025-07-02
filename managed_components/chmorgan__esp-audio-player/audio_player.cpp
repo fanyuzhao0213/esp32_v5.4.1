@@ -38,6 +38,7 @@
 
 #include "audio_wav.h"
 #include "audio_mp3.h"
+#include "esp_log.h"
 
 static const char *TAG = "audio";
 

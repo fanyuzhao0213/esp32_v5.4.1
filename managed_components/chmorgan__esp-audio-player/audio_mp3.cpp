@@ -1,6 +1,7 @@
 #include <string.h>
 #include "audio_log.h"
 #include "audio_mp3.h"
+#include "esp_log.h"
 
 static const char *TAG = "mp3";
 
@@ -74,12 +75,12 @@ DECODE_STATUS decode_mp3(HMP3Decoder mp3_decoder, FILE *fp, decode_data *pData, 
         }
 
         LOGI_2("pos %ld, nRead %d, eof %d", ftell(fp), nRead, pInstance->eof_reached);
-
+        //ESP_LOGI("MY_Mp3decode","pos %ld, nRead %d, eof %d", ftell(fp), nRead, pInstance->eof_reached);
         unread_bytes = pInstance->bytes_in_data_buf;
     }
 
     LOGI_3("data_buf 0x%p, read 0x%p", pInstance->data_buf, pInstance->read_ptr);
-
+    //ESP_LOGI("MY_Mp3decode","data_buf 0x%p, read 0x%p", pInstance->data_buf, pInstance->read_ptr);
     if(unread_bytes == 0) {
         LOGI_1("unread_bytes == 0, status done");
         return DECODE_STATUS_DONE;
@@ -90,13 +91,13 @@ DECODE_STATUS decode_mp3(HMP3Decoder mp3_decoder, FILE *fp, decode_data *pData, 
 
     LOGI_2("unread %d, total %d, offset 0x%x(%d)",
             unread_bytes, pInstance->bytes_in_data_buf, offset, offset);
-
     if (offset >= 0) {
         COMPILE_3(int starting_unread_bytes = unread_bytes);
         uint8_t *read_ptr = pInstance->read_ptr + offset; /*!< Data start point */
         unread_bytes -= offset;
         LOGI_3("read 0x%p, unread %d", read_ptr, unread_bytes);
-        int mp3_dec_err = MP3Decode(mp3_decoder, &read_ptr, (int*)&unread_bytes, reinterpret_cast<int16_t *>(pData->samples), 
+        //ESP_LOGI("MY_Mp3decode","read 0x%p, unread %d", read_ptr, unread_bytes);
+        int mp3_dec_err = MP3Decode(mp3_decoder, &read_ptr, (int*)&unread_bytes, reinterpret_cast<int16_t *>(pData->samples),
 0);
 
         pInstance->read_ptr = read_ptr;
@@ -140,6 +141,10 @@ DECODE_STATUS decode_mp3(HMP3Decoder mp3_decoder, FILE *fp, decode_data *pData, 
                 //
                 // We may want to consider a more sophisticated approach here at a later time.
                 ESP_LOGE(TAG, "status error %d", mp3_dec_err);
+                // ✅【新增】跳过当前错误帧的1个字节，避免死循环
+                if (pInstance->read_ptr - pInstance->data_buf < pInstance->bytes_in_data_buf - 1) {
+                    pInstance->read_ptr += 1;
+                }
                 return DECODE_STATUS_NO_DATA_CONTINUE;
             }
         }

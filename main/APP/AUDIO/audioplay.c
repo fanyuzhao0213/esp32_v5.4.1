@@ -5,8 +5,7 @@
  */
 
 #include "audioplay.h"
-#include "mp3_decoder.h"
-#include "mp3_decoder.h"
+
 
 __audiodev g_audiodev;          /* 音乐播放控制器 */
 
@@ -247,7 +246,7 @@ void audio_play(void)
     }
 
     curindex = 0;                                               /* 从0开始显示 */
-    res = f_opendir(&wavdir, (const TCHAR*)"0:/MP3");
+    res = f_opendir(&wavdir, (const TCHAR*)"0:/MUSIC");
 
     while (res == FR_OK)                                        /* 打开目录 */
     {
@@ -310,14 +309,10 @@ uint8_t audio_play_song(uint8_t *fname)
     switch (res)
     {
         case T_WAV:
-            ESP_LOGI("Audioplay","WAV  START!");
             res = wav_play_song(fname);
             break;
         case T_MP3:
         {
-            // const char *fname = "0:/MP3/test.mp3"; // 或者你是从某个路径列表拿到的 char *
-            // res = my_mp3_play((const char *)fname);
-            ESP_LOGI("Audioplay","MP3  START!");
             break;
         }
 
@@ -329,3 +324,9 @@ uint8_t audio_play_song(uint8_t *fname)
     return res;
 }
 
+// 测试函数：播放spiffs目录下的mp3文件
+void test_mp3_play(void)
+{
+    uint8_t mp3_path[] = "/spiffs/kebukeyi.mp3";
+    audio_play_song(mp3_path);
+}

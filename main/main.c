@@ -38,7 +38,7 @@ static void timer_init_example(void);
 static void printf_chip_info(void);
 static void my_eeprom_init(void);
 static void my_hardware_init(void);
-
+esp_err_t my_mp3_play(char* path);
 /**
  * @brief       程序入口
  * @param       无
@@ -63,22 +63,29 @@ void app_main(void)
     xTaskCreate(http_get_task, "http_get_task", 8192, NULL, 5, NULL);
     xTaskCreate(decode_mp3_task, "print_task", 4096, NULL, 4, NULL);
     my_hardware_init();             //初始化板级设备信息
-    // // wav_play_song("0:/MUSIC/2.wav");      //单独播放某一个特定文件的音乐  wav格式
-    // my_mp3_play_test("0:/MP3/1.mp3");
+    // wav_play_song("0:/MUSIC/2.wav");      //单独播放某一个特定文件的音乐  wav格式
 
-    const char *mp3_path = "/spiffs/test.mp3"; // 请确保路径正确且已挂载
-
-    FILE *fp = fopen(mp3_path, "rb");
-    if (!fp) {
-        ESP_LOGE(TAG, "Failed to open file %s", mp3_path);
-        return;
-    }
-    ret = play_mp3_file(fp);
+    // const char *mp3_path = "/spiffs/test.mp3"; // 请确保路径正确且已挂载
+    // const char *mp3_path = "/0:/MP3/renjianyanhuo.mp3"; // 请确保路径正确且已挂载
+    my_mp3_play("/0:/MP3/renjianyanhuo.mp3");
 
     while(1) {
         // audio_play();       /* 循环播放音乐 */
         vTaskDelay(pdMS_TO_TICKS(10)); /* 延时 */
     }
+}
+
+esp_err_t my_mp3_play(char* path)
+{
+    esp_err_t ret;
+    FILE *fp = fopen(path, "rb");
+    if (!fp) {
+        ESP_LOGE(TAG, "Failed to open file %s", path);
+        return -1;
+    }
+    ret = play_mp3_file(fp);
+
+    return ret;
 }
 
 static void my_hardware_init(void)

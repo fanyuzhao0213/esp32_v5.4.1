@@ -187,6 +187,8 @@ esp_err_t play_mp3_file(FILE *fp)
     vQueueDelete(event_queue);
     audio_player_delete();
     vTaskDelay(pdMS_TO_TICKS(100));  // ⏱️给播放器内部线程一点时间释放文件
+    audio_stop();                   /* 先停止播放 */
+    i2s_deinit();                   /* 卸载I2S */
     fclose(fp);  // 🔐 播放结束后安全关闭文件
     return ESP_OK;
 }
