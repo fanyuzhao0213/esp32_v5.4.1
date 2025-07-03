@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "fyz_esp32_project",
-    "project_version":    "b34c688-dirty",
+    "project_version":    "d62dd58-dirty",
     "project_path":       "E:/fyz_esp32s3_project",
     "idf_path":           "F:/esp_idf_5.4.1/v5.4.1/esp-idf",
     "build_dir":          "E:/fyz_esp32s3_project/build",
@@ -1270,7 +1270,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [ "chmorgan__esp-audio-player" ],
             "file": "E:/fyz_esp32s3_project/build/esp-idf/main/libmain.a",
-            "sources": [ "E:/fyz_esp32s3_project/main/main.c", "E:/fyz_esp32s3_project/main/mp3_decoder.c", "E:/fyz_esp32s3_project/main/APP/AUDIO/audioplay.c", "E:/fyz_esp32s3_project/main/APP/AUDIO/wavplay.c" ],
+            "sources": [ "E:/fyz_esp32s3_project/main/main.c", "E:/fyz_esp32s3_project/main/mp3_decoder.c", "E:/fyz_esp32s3_project/main/APP/AUDIO/audioplay.c", "E:/fyz_esp32s3_project/main/APP/AUDIO/record.c", "E:/fyz_esp32s3_project/main/APP/AUDIO/wavplay.c" ],
             "include_dirs": [ ".", "APP", "APP/AUDIO" ]
         },
         "mbedtls": {

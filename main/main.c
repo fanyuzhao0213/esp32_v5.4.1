@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "esp_log.h"
 
+#include "record.h"
 #include "http.h"
 #include "wifi.h"
 #include "led.h"
@@ -67,8 +68,8 @@ void app_main(void)
 
     // const char *mp3_path = "/spiffs/test.mp3"; // 请确保路径正确且已挂载
     // const char *mp3_path = "/0:/MP3/renjianyanhuo.mp3"; // 请确保路径正确且已挂载
-    my_mp3_play("/0:/MP3/renjianyanhuo.mp3");
-
+    // my_mp3_play("/0:/MP3/renjianyanhuo.mp3");
+    my_recorder_init();
     while(1) {
         // audio_play();       /* 循环播放音乐 */
         vTaskDelay(pdMS_TO_TICKS(10)); /* 延时 */
